@@ -5,7 +5,7 @@ from datetime import datetime
 class TestCalliope(unittest.TestCase):
     def test_battery_should_be_serviced(self):
         today = datetime.today().date()
-        last_service_date = today.replace(year=today.year - 3)
+        last_service_date = today.replace(year=today.year - 4)
         current_mileage = 0
         last_service_mileage = 0
 
@@ -37,11 +37,21 @@ class TestCalliope(unittest.TestCase):
         car = CarFactory.create_calliope(datetime.today().date(),last_service_date,current_mileage,last_service_mileage)
         self.assertFalse(car.needs_service())
 
+    def test_tire_should_be_serviced(self):
+        tire_wear_values = [0, 0, 0, 1]
+        car = CarFactory.create_calliope(datetime.today().date(),datetime.today().date(),0,0,tire_wear_values)
+        self.assertTrue(car.needs_service())
+    
+    def test_tire_should_not_be_serviced(self):
+        tire_wear_values = [0.2, 0.3, 0.4, 0.5]
+        car = CarFactory.create_calliope(datetime.today().date(),datetime.today().date(),0,0,tire_wear_values)
+        self.assertFalse(car.needs_service())
+        
 
 class TestGlissade(unittest.TestCase):
     def test_battery_should_be_serviced(self):
         today = datetime.today().date()
-        last_service_date = today.replace(year=today.year - 3)
+        last_service_date = today.replace(year=today.year - 4)
         current_mileage = 0
         last_service_mileage = 0
 
@@ -72,12 +82,22 @@ class TestGlissade(unittest.TestCase):
 
         car = CarFactory.create_glissade(datetime.today().date(), last_service_date, current_mileage, last_service_mileage)
         self.assertFalse(car.needs_service())
+    
+    def test_tire_should_be_serviced(self):
+        tire_wear_values = [0, 0, 0.9, 1]
+        car = CarFactory.create_glissade(datetime.today().date(),datetime.today().date(),0,0,tire_wear_values)
+        self.assertTrue(car.needs_service())
+    
+    def test_tire_should_not_be_serviced(self):
+        tire_wear_values = [0, 0.1, 0, 0.7]
+        car = CarFactory.create_glissade(datetime.today().date(),datetime.today().date(),0,0,tire_wear_values)
+        self.assertFalse(car.needs_service())
 
 
 class TestPalindrome(unittest.TestCase):
     def test_battery_should_be_serviced(self):
         today = datetime.today().date()
-        last_service_date = today.replace(year=today.year - 5)
+        last_service_date = today.replace(year=today.year - 4)
         warning_light_is_on = False
 
         car = CarFactory.create_palindrome(today,last_service_date, warning_light_is_on)
@@ -105,6 +125,15 @@ class TestPalindrome(unittest.TestCase):
         car = CarFactory.create_palindrome(datetime.today().date(),last_service_date, warning_light_is_on)
         self.assertFalse(car.needs_service())
 
+    def test_tire_should_be_serviced(self):
+        tire_wear_values = [0.8, 0.8, 0.8, 0.8]
+        car = CarFactory.create_palindrome(datetime.today().date(),datetime.today().date(),False,tire_wear_values)
+        self.assertTrue(car.needs_service())
+    
+    def test_tire_should_not_be_serviced(self):
+        tire_wear_values = [0.8, 0.8, 0.4, 0.5]
+        car = CarFactory.create_palindrome(datetime.today().date(),datetime.today().date(),False,tire_wear_values)
+        self.assertFalse(car.needs_service())
 
 class TestRorschach(unittest.TestCase):
     def test_battery_should_be_serviced(self):
@@ -141,6 +170,16 @@ class TestRorschach(unittest.TestCase):
         car = CarFactory.create_rorschach(datetime.today().date(), last_service_date, current_mileage, last_service_mileage)
         self.assertFalse(car.needs_service())
 
+    def test_tire_should_be_serviced(self):
+        tire_wear_values = [1, 1, 1, 0]
+        car = CarFactory.create_rorschach(datetime.today().date(),datetime.today().date(),0,0,tire_wear_values)
+        self.assertTrue(car.needs_service())
+    
+    def test_tire_should_not_be_serviced(self):
+        tire_wear_values = [0, 0, 0, 0]
+        car = CarFactory.create_rorschach(datetime.today().date(),datetime.today().date(),0,0,tire_wear_values)
+        self.assertFalse(car.needs_service())
+
 
 class TestThovex(unittest.TestCase):
     def test_battery_should_be_serviced(self):
@@ -175,6 +214,16 @@ class TestThovex(unittest.TestCase):
         last_service_mileage = 0
 
         car = CarFactory.create_thovex(datetime.today().date(),last_service_date, current_mileage, last_service_mileage)
+        self.assertFalse(car.needs_service())
+
+    def test_tire_should_be_serviced(self):
+        tire_wear_values = [0.4, 0.6, 1, 1]
+        car = CarFactory.create_thovex(datetime.today().date(),datetime.today().date(),0,0,tire_wear_values)
+        self.assertTrue(car.needs_service())
+    
+    def test_tire_should_not_be_serviced(self):
+        tire_wear_values = [0.5, 0.8, 0.7, 0.9]
+        car = CarFactory.create_thovex(datetime.today().date(),datetime.today().date(),0,0,tire_wear_values)
         self.assertFalse(car.needs_service())
 
 
